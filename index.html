@@ -20,6 +20,11 @@ h2{margin:0 0 12px;font-size:26px;font-weight:900;letter-spacing:1px;font-style:
 .btn{appearance:none;border:0;border-radius:14px;padding:14px 22px;margin:6px 0;min-width:230px;font:800 19px inherit;font-family:inherit;color:#1b1200;background:linear-gradient(180deg,#ffe58a,#ffb22e);box-shadow:0 4px 0 #a55a00,0 8px 20px #0007;cursor:pointer;letter-spacing:.5px}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #a55a00}
 .btn.alt{color:#eaf4ff;background:linear-gradient(180deg,#3d6fb8,#244a86);box-shadow:0 4px 0 #142a52,0 8px 20px #0007}
+.btn.inst{min-width:230px;color:#1a0600;background:linear-gradient(180deg,#fff1b8,#ff9a2a 55%,#ff5a10);box-shadow:0 4px 0 #8a2a00,0 0 18px #ff7a2a99,0 8px 20px #0007;display:none}
+#instOv{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:#020812d9;padding:24px}
+#instOv .card{max-width:340px;background:linear-gradient(180deg,#14284f,#0b1a3a);border:2px solid #ffc21a;border-radius:18px;padding:20px;color:#eaf4ff;text-align:center;box-shadow:0 0 30px #ff7a2a66;font-family:inherit}
+#instOv img{width:84px;height:84px;border-radius:20px;box-shadow:0 4px 16px #000a}
+#instOv h3{margin:10px 0 6px;color:#ffd04a;letter-spacing:2px}#instOv ol{text-align:left;line-height:1.6;padding-left:22px;margin:8px 0 14px}
 .btn.sm{min-width:0;padding:9px 14px;font-size:15px}
 .btn[disabled]{opacity:.5;background:linear-gradient(180deg,#8a8f99,#5c616b);color:#fff;box-shadow:0 4px 0 #33363c}
 .starc{display:inline-flex;align-items:center;gap:6px;font-weight:900;font-size:20px;color:#ffe37a}
@@ -73,8 +78,20 @@ h2{margin:0 0 12px;font-size:26px;font-weight:900;letter-spacing:1px;font-style:
   <button class="btn" data-go="map">▶ Play</button>
   <button class="btn alt" data-go="hangar">🔧 Hangar</button>
   <button class="btn alt" data-go="settings">⚙ Settings</button>
+  <button class="btn inst" id="installBtn">📲 Install App</button>
   <div style="flex:1.3"></div>
 </div>
+<div id="instOv" role="dialog" aria-label="Install Skyfall"><div class="card"><img src="icons/icon-192.png" alt=""><h3>INSTALL SKYFALL</h3><div id="instTx"></div><button class="btn sm" id="instOk">Got it</button></div></div>
+<script>(function(){var bip=null,b=document.getElementById('installBtn'),ov=document.getElementById('instOv'),tx=document.getElementById('instTx');
+function inst(){try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true}catch(e){return false}}
+function up(){b.style.display=inst()||location.protocol==='file:'?'none':'inline-block'}
+addEventListener('beforeinstallprompt',function(e){e.preventDefault();bip=e;up()});
+addEventListener('appinstalled',function(){bip=null;b.style.display='none'});
+var ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function how(){tx.innerHTML=ios?'<ol><li>Open this page in <b>Safari</b></li><li>Tap <b>Share</b> <span style="font-size:18px">⎋</span> (square with arrow)</li><li>Tap <b>Add to Home Screen</b></li></ol>':'<ol><li>Tap the browser menu <b>⋮</b> (top-right)</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b></li><li>Confirm <b>Install</b></li></ol>';ov.style.display='flex'}
+b.onclick=function(){if(bip){var e=bip;bip=null;e.prompt();e.userChoice.then(function(r){if(r.outcome==='accepted')b.style.display='none'}).catch(how)}else how()};
+document.getElementById('instOk').onclick=function(){ov.style.display='none'};ov.onclick=function(e){if(e.target===ov)ov.style.display='none'};
+up();})();</script>
 
 <div class="scr" id="s-map">
   <h2>Missions</h2>
