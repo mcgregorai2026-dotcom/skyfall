@@ -1,6 +1,6 @@
 // Skyfall service worker. Game page: network-first (updates show on next open when online, cached copy offline).
 // Everything else: cache-first. Old caches removed on activate.
-const CACHE='skyfall-71ad471ce1';
+const CACHE='skyfall-e7a77f380b';
 const PRECACHE=["./", "index.html", "manifest.webmanifest", "favicon.ico", "icons/icon-32.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-192.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRECACHE)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('skyfall-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
